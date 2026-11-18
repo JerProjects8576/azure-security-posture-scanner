@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Lint and test (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Unit tests with coverage
+        run: pytest --cov=azposture --cov-report=term-missing
+
+  scan-example:
+    name: Scan the example environment
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install .
+      - name: Scan and write reports
+        # The example contains insecure resources on purpose, so exit code 1 is expected.
+        run: |
+          set +e
+          azposture -i examples/sample-resources.json -f markdown -o report.md
+          code=$?
+          azposture -i examples/sample-resources.json -f sarif -o report.sarif
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" -ne 1 ]; then
+            echo "Expected exit code 1 for the insecure example, got $code"
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v5
+        with:
+          name: security-report
+          path: |
+            report.md
+            report.sarif

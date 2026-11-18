@@ -1,0 +1,117 @@
+[
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.Storage/storageAccounts/stdemopublic",
+    "name": "stdemopublic",
+    "type": "Microsoft.Storage/storageAccounts",
+    "location": "westeurope",
+    "properties": {
+      "allowBlobPublicAccess": true,
+      "supportsHttpsTrafficOnly": false,
+      "minimumTlsVersion": "TLS1_0"
+    }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.Storage/storageAccounts/stdemosecure",
+    "name": "stdemosecure",
+    "type": "Microsoft.Storage/storageAccounts",
+    "location": "westeurope",
+    "properties": {
+      "allowBlobPublicAccess": false,
+      "supportsHttpsTrafficOnly": true,
+      "minimumTlsVersion": "TLS1_2"
+    }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.KeyVault/vaults/kv-demo-open",
+    "name": "kv-demo-open",
+    "type": "Microsoft.KeyVault/vaults",
+    "location": "westeurope",
+    "properties": {
+      "enablePurgeProtection": false,
+      "publicNetworkAccess": "Enabled",
+      "networkAcls": { "defaultAction": "Allow" }
+    }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.KeyVault/vaults/kv-demo-private",
+    "name": "kv-demo-private",
+    "type": "Microsoft.KeyVault/vaults",
+    "location": "westeurope",
+    "properties": {
+      "enablePurgeProtection": true,
+      "publicNetworkAccess": "Disabled",
+      "networkAcls": { "defaultAction": "Deny" }
+    }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.Network/networkSecurityGroups/nsg-demo-vm",
+    "name": "nsg-demo-vm",
+    "type": "Microsoft.Network/networkSecurityGroups",
+    "location": "westeurope",
+    "properties": {
+      "securityRules": [
+        {
+          "name": "allow-rdp",
+          "properties": {
+            "access": "Allow",
+            "direction": "Inbound",
+            "protocol": "Tcp",
+            "sourceAddressPrefix": "*",
+            "destinationPortRange": "3389"
+          }
+        },
+        {
+          "name": "allow-ssh-office",
+          "properties": {
+            "access": "Allow",
+            "direction": "Inbound",
+            "protocol": "Tcp",
+            "sourceAddressPrefix": "203.0.113.10/32",
+            "destinationPortRange": "22"
+          }
+        },
+        {
+          "name": "allow-everything",
+          "properties": {
+            "access": "Allow",
+            "direction": "Inbound",
+            "protocol": "*",
+            "sourceAddressPrefix": "Internet",
+            "destinationPortRange": "*"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.Web/sites/app-demo",
+    "name": "app-demo",
+    "type": "Microsoft.Web/sites",
+    "location": "westeurope",
+    "properties": {
+      "httpsOnly": false,
+      "siteConfig": { "minTlsVersion": "1.0" }
+    }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.Sql/servers/sql-demo",
+    "name": "sql-demo",
+    "type": "Microsoft.Sql/servers",
+    "location": "westeurope",
+    "properties": { "publicNetworkAccess": "Enabled" }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.Sql/servers/sql-demo/firewallRules/allow-all",
+    "name": "allow-all",
+    "type": "Microsoft.Sql/servers/firewallRules",
+    "location": "westeurope",
+    "properties": { "startIpAddress": "0.0.0.0", "endIpAddress": "255.255.255.255" }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-demo/providers/Microsoft.Compute/virtualMachines/vm-demo",
+    "name": "vm-demo",
+    "type": "Microsoft.Compute/virtualMachines",
+    "location": "westeurope",
+    "properties": {}
+  }
+]

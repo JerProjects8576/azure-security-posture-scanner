@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "azposture"
+version = "0.1.0"
+description = "Scan Azure resources for common security misconfigurations and report them as a table, Markdown, JSON or SARIF."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "JerProjects8576" }]
+dependencies = []
+
+[project.optional-dependencies]
+live = [
+    "azure-identity>=1.15",
+    "azure-mgmt-resourcegraph>=8.0",
+]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+azposture = "azposture.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
